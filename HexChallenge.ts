@@ -2,9 +2,9 @@
 init();
 function init() {
 // //call convertBase with original hex string.
-// console.log(convertHexBase64("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
-// ));
-// console.log(fixedXor("1c0111001f010100061a024b53535009181c", "686974207468652062756c6c277320657965"))
+console.log(convertHexBase64("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
+));
+console.log(fixedXor("1c0111001f010100061a024b53535009181c", "686974207468652062756c6c277320657965"))
 displayPlaintext();
 }
 
@@ -25,6 +25,21 @@ function convertHexBinary(origin: string ) {
   origin = "0x" + origin;
     return BigInt(origin).toString(2);
 }
+
+/**
+ *
+ * @param origin String input in hex
+ * returns String output as the ASCII conversion
+ */
+function convertHexText(origin: string){
+    let ascii = "";
+    for (let i = 0; i <origin.length; i+=2){
+        let hexChar = origin.substring(1, i +2);
+        var txtChar = String.fromCharCode(parseInt(hexChar, 16))
+        ascii = ascii + txtChar;
+    }
+    return ascii;
+}
 /**
  *
  * @param string1
@@ -39,23 +54,36 @@ function fixedXor(string1: string, string2: string) {
     let result = int1 ^int2;
     return result.toString(16);
 }
+//Challenge 3 uses "x".
 function displayPlaintext() {
     //could be considered a testing function.
     //for i->n such as 5
         //display the results of xor'ing the string against a single char
-    for (let i = 0; i < 5; i++){
-        console.log(xorCipher(String.fromCharCode('a'.charCodeAt(0)+i),"1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736" ));
+    for (let i = 0; i < 10; i++){
+        console.log(convertHexText(xorCipher(String.fromCharCode('x'.charCodeAt(0)+i),
+            "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736" )));
     }
 }
 function xorCipher(char:string, ctext:string) {
 //expand the size of the char string to the size of the ctext string
     let chars = "";
-    for(let i =0; i < ctext.length; i++){
+    char = char.charCodeAt(0).toString(16);
+    while (chars.length!=ctext.length){
     chars += char;
     }
-    if (ctext.length == chars.length){
         return fixedXor(ctext, chars);
-    }
-    return "";
     //call fixedxor on both
+}
+function decryptFile(ctext:string){
+
+    return "";
+}
+
+/**
+ * @param ptext accepts supposed plaintext
+ * determines how likely the plaintext is English.
+ * Returns -1 if not English.
+ */
+function score(ptext:string){
+    return "";
 }
