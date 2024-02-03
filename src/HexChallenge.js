@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.xorCipher = exports.fixedXor = exports.convertHexText = exports.convertHexBinary = exports.convertHexBase64 = void 0;
 init();
 function init() {
     // //call convertBase with original hex string.
@@ -14,6 +16,7 @@ function convertHexBase64(origin) {
     let bufferObj = Buffer.from(origin, "hex");
     return bufferObj.toString("base64");
 }
+exports.convertHexBase64 = convertHexBase64;
 /**
  * @param origin String input in hex
  * returns String output as the binary conversion
@@ -22,6 +25,7 @@ function convertHexBinary(origin) {
     origin = "0x" + origin;
     return BigInt(origin).toString(2);
 }
+exports.convertHexBinary = convertHexBinary;
 /**
  *
  * @param origin String input in hex
@@ -36,6 +40,7 @@ function convertHexText(origin) {
     }
     return ascii;
 }
+exports.convertHexText = convertHexText;
 /**
  *
  * @param string1
@@ -50,6 +55,7 @@ function fixedXor(string1, string2) {
     let result = int1 ^ int2;
     return result.toString(16);
 }
+exports.fixedXor = fixedXor;
 //Challenge 3 uses "x".
 function displayPlaintext() {
     //could be considered a testing function.
@@ -69,6 +75,7 @@ function xorCipher(char, ctext) {
     return fixedXor(ctext, chars);
     //call fixedxor on both
 }
+exports.xorCipher = xorCipher;
 function decryptFile(ctext) {
     return "";
 }

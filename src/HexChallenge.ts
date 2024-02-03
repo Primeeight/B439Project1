@@ -12,7 +12,7 @@ displayPlaintext();
  * Accepts a base 16 string and converts it to a base 64 string.
  * @param origin
  */
-function convertHexBase64(origin: string ){
+ function convertHexBase64(origin: string ){
     let bufferObj= Buffer.from(origin, "hex");
     return bufferObj.toString("base64");
 }
@@ -87,3 +87,4 @@ function decryptFile(ctext:string){
 function score(ptext:string){
     return "";
 }
+export {convertHexBase64, convertHexBinary, convertHexText, fixedXor, xorCipher}
