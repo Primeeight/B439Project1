@@ -1,4 +1,4 @@
-import {convertHexBase64, convertHexBinary, convertHexText, xorCipher} from "../src/HexChallenge.js";
+import {convertHexBase64, convertHexBinary, convertHexText, decryptFile, xorCipher} from "../src/HexChallenge.js";
 
 test("Testing converting hex to base64 ", () => {
     expect(convertHexBase64("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d")
@@ -19,3 +19,7 @@ test("Single Char Xor Cipher", ()=>{
 "cOOKING mcS LIKE A POUND OF BACON"
     )
 });
+test("File Reading", ()=>{
+    decryptFile();
+});
+
