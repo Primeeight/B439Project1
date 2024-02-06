@@ -1,3 +1,5 @@
+//import fspromise for later use.
+import * as fs from "fs/promises";
 
 init();
 function init() {
@@ -5,7 +7,7 @@ function init() {
 console.log(convertHexBase64("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
 ));
 console.log(fixedXor("1c0111001f010100061a024b53535009181c", "686974207468652062756c6c277320657965"))
-displayPlaintext();
+    console.log(convertHexText("00"));
 }
 
 /**
@@ -34,8 +36,10 @@ function convertHexBinary(origin: string ) {
 function convertHexText(origin: string){
     let ascii = "";
     for (let i = 0; i <origin.length; i+=2){
-        let hexChar = origin.substring(1, i +2);
+        let hexChar = origin.substring(i, i +2);
         var txtChar = String.fromCharCode(parseInt(hexChar, 16))
+        if (hexChar === "00")
+            txtChar = " ";
         ascii = ascii + txtChar;
     }
     return ascii;
@@ -54,16 +58,7 @@ function fixedXor(string1: string, string2: string) {
     let result = int1 ^int2;
     return result.toString(16);
 }
-//Challenge 3 uses "x".
-function displayPlaintext() {
-    //could be considered a testing function.
-    //for i->n such as 5
-        //display the results of xor'ing the string against a single char
-    for (let i = 0; i < 10; i++){
-        console.log(convertHexText(xorCipher(String.fromCharCode('x'.charCodeAt(0)+i),
-            "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736" )));
-    }
-}
+
 function xorCipher(char:string, ctext:string) {
 //expand the size of the char string to the size of the ctext string
     let chars = "";
@@ -74,8 +69,20 @@ function xorCipher(char:string, ctext:string) {
         return fixedXor(ctext, chars);
     //call fixedxor on both
 }
-function decryptFile(ctext:string){
+async function decryptFile(ctext: string) {
+    //May only want to read the file.
+//Create a file object.
+    //Read the file object
+    const [file] = await Promise.all([fs.open("./4.txt", "r")]);
+    //For each line in the file
+    for await (const line of file.readLines()) {
+        //For each char in the alphabet
+        for (let i = 0; i < 26; i++) {
 
+            //Try each char
+            //Display the assci equivalent of the text.
+        }
+    }
     return "";
 }
 
@@ -86,5 +93,12 @@ function decryptFile(ctext:string){
  */
 function score(ptext:string){
     return "";
+}
+
+/**
+ * Encrypts each byte of plaintext with each byte of key, cycling back to the beginning of the key.
+ */
+function repeatKeyXor() {
+
 }
 export {convertHexBase64, convertHexBinary, convertHexText, fixedXor, xorCipher}
