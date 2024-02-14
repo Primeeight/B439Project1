@@ -5,12 +5,9 @@ const fs = require('fs');
 const readline = require('readline');
 init();
 function init() {
-    // //call convertBase with original hex string.
     console.log(convertHexBase64("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"));
     console.log(fixedXor("1c0111001f010100061a024b53535009181c", "686974207468652062756c6c277320657965"));
-    console.log(convertHexText("00"));
-    bruteXor("1c3df1135321a8e9241a5607f8305d571aa546001e3254555a11511924");
-    // decryptFile();
+    decryptFile("test.txt");
 }
 /**
  * Accepts a base 16 string and converts it to a base 64 string.
@@ -63,7 +60,6 @@ function fixedXor(string1, string2) {
 }
 exports.fixedXor = fixedXor;
 function xorCipher(char, ctext) {
-    //expand the size of the char string to the size of the ctext string
     let chars = "";
     char = char.charCodeAt(0).toString(16);
     while (chars.length != ctext.length) {
@@ -73,28 +69,41 @@ function xorCipher(char, ctext) {
     //call fixedxor on both
 }
 exports.xorCipher = xorCipher;
+/**
+ * Returns the results of xor with each letter
+ * @param ctext Ciphertext to be entered
+ */
 function bruteXor(ctext) {
+    let candidates = new Array(2);
     for (let i = 0; i < 26; i++) {
-        console.log(convertHexText(xorCipher(String.fromCharCode(97 + i), ctext)));
+        let ptext = convertHexText(xorCipher(String.fromCharCode(97 + i), ctext));
+        //Call scoring method here.
+        if (score(ptext) >= 5) {
+            candidates[0] = ptext;
+        }
     }
+    //Return a list of scored strings.
+    return candidates;
 }
-function decryptFile() {
-    //May only want to read the file.
-    //Create a file object.
-    //Read the file object
+function decryptFile(filename) {
+    let results = new Array(2);
+    //Create and read the file object.
     const file = readline.createInterface({
-        input: fs.createReadStream('4.txt'),
+        input: fs.createReadStream(filename),
         output: process.stdout,
         terminal: false
     });
     //For each line in the file
     file.on("line", (line) => {
-        console.log(line);
+        // //For each char in the alphabet
+        // //Try each char
+        // //Display the ascii equivalent of the text.
+        // results = Array.from(bruteXor(line));
+        let fline = line;
+        console.log(fline);
+        results[0] = line;
     });
-    //For each char in the alphabet
-    //Try each char
-    //Display the assci equivalent of the text.
-    return "";
+    return results[0];
 }
 exports.decryptFile = decryptFile;
 /**
@@ -103,7 +112,12 @@ exports.decryptFile = decryptFile;
  * Returns -1 if not English.
  */
 function score(ptext) {
-    return "";
+    let vowel = ptext.match(/[aeiou]/gi);
+    // @ts-ignore
+    let vScore = 3 * vowel.length;
+    // @ts-ignore
+    let cScore = ptext.length - vowel.length;
+    return vScore + cScore;
 }
 /**
  * Encrypts each byte of plaintext with each byte of key, cycling back to the beginning of the key.

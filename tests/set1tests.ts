@@ -20,6 +20,9 @@ test("Single Char Xor Cipher", ()=>{
     )
 });
 test("File Reading", ()=>{
-    decryptFile();
+    decryptFile("test.txt");
+});
+test("File Reading and Decrypting", ()=>{
+    expect(decryptFile("test.txt")).toBe( "hello world");
 });
 
